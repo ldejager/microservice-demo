@@ -4,17 +4,26 @@ The purpose of the demo is to take a service and break it down into smaller piec
 
 Using Gin as a web framework the goal is to create a simple task API which has endpoints for creating and listing tasks and getting a basic health status back.
 
-## Usage
+## Development
 
 ### Building
 
+You have two options in building the binary, the first being locally which uses your host operation systems golang path, libraries etc., the other being to use the pre-built binary in the docker container.
+
+#### Locally
 ```
 go build
 ```
 
+#### Docker
+
+```
+docker build -t api .
+```
+
 ### Running
 
-Once the binary has been built, run it like so;
+Once the binary has been built, run it like so locally. Alternatively, run the docker container you have created in the step above.
 
 ```
 ./api
@@ -41,7 +50,7 @@ curl -v localhost:8000/tasks
 #### Create Task
 Create a simple task on the API via an HTTP POST (JSON)
 ```
-curl -v -X POST localhost:8000/ -d '{}'
+curl -v -H "Content-Type: application/json" -X POST -d '{"Name": "", "Description": ""}' localhost:8000/tasks
 ```
 
 #### View Task Details
@@ -75,10 +84,8 @@ livenessProbe:
 
 ## TODO
 
-- Fix mapping bug
 - Abstract sqlite database from the service
 - Create a real health check
 - Create build toolset for the API
-- Create sample tests which is trigger by the build toolset
-- Dockerise the application (in progress)
+- Create sample tests which is triggered by the build toolset
 - Create Kubernetes resource controller and service etc. definitions
