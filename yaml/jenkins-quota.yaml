@@ -1,0 +1,12 @@
+kind: ResourceQuota
+apiVersion: v1
+metadata:
+  name: jenkins
+spec:
+  hard:
+    memory: 8Gi
+    cpu: 8
+    pods: 20
+    services: 10
+    replicationcontrollers: 30
+    resourcequotas: 5
