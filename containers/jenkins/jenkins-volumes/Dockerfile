@@ -1,0 +1,19 @@
+FROM jenkinsci/jenkins
+
+USER root
+
+RUN gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+  && curl -sSL -o /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" \
+  && curl -sSL -o /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture).asc" \
+  && gpg --verify /usr/local/bin/gosu.asc \
+  && rm /usr/local/bin/gosu.asc \
+  && chmod +x /usr/local/bin/gosu
+
+RUN apt-get update \
+ && apt-get -y install --no-install-recommends rsync \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY volume-permissions.sh /usr/local/bin/volume-permissions.sh
+
+ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/volume-permissions.sh"]
