@@ -2,7 +2,7 @@ build:
   image: golang
   commands:
     - go get
-    - go build -v containers/api
+    - go build 
 
 publish:
   docker:
