@@ -2,7 +2,7 @@ build:
   image: golang
   commands:
     - go get
-    - go build
+    - go build -v containers/api
 
 publish:
   docker:
@@ -13,3 +13,9 @@ publish:
     tag:
       - $$COMMIT
       - latest
+
+notify:
+  slack:
+    webhook_url: https://hooks.slack.com/services/...
+    username: deploy
+    channel: k8s_tech_day
