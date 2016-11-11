@@ -13,9 +13,3 @@ publish:
     tag:
       - $$COMMIT
       - latest
-
-notify:
-  slack:
-    webhook_url: https://hooks.slack.com/services/...
-    username: deploy
-    channel: k8s_tech_day
