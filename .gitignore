@@ -1,0 +1,4 @@
+dronerc
+.drone.sec
+secrets.yml
+drone.sqlite
