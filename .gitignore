@@ -1,3 +1,5 @@
 dronerc
 secrets.yml
 drone.sqlite
+drone-secret.yaml
+drone-service.yaml
