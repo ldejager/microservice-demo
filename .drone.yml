@@ -1,0 +1,21 @@
+build:
+  image: golang
+  commands:
+    - go get
+    - go build
+
+publish:
+  docker:
+    username: $$DOCKER_USERNAME
+    password: $$DOCKER_PASSWORD
+    email: $$DOCKER_EMAIL
+    repo: ldejager/microservices-demo
+    tag:
+      - $$COMMIT
+      - latest
+
+notify:
+  slack:
+    webhook_url: https://hooks.slack.com/services/...
+    username: deploy
+    channel: k8s_tech_day
