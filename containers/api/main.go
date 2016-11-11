@@ -53,21 +53,21 @@ func createTask(name, description string) Task {
 
 	err := dbmap.Insert(&task)
 
-	checkErr(err, "Failed to create task")
+	HandleError(err, "Failed to create task")
 	return task
 }
 
 func getTask(task_id int) Task {
 	task := Task{}
 	err := dbmap.SelectOne(&task, "select * from tasks where task_id=?", task_id)
-	checkErr(err, "Failed to select task")
+	HandleError(err, "Failed to select task")
 	return task
 }
 
 func TasksList(c *gin.Context) {
 	var tasks []Task
 	_, err := dbmap.Select(&tasks, "select * from tasks order by task_id")
-	checkErr(err, "Select failed")
+	HandleError(err, "Select failed")
 	content := gin.H{}
 	for k, v := range tasks {
 		content[strconv.Itoa(k)] = v
@@ -94,15 +94,23 @@ func TaskPost(c *gin.Context) {
 			"name":        task.Name,
 			"description": task.Description,
 		}
-		c.JSON(201, content)
+		c.IndentedJSON(201, content)
 	} else {
-		c.JSON(500, gin.H{"result": "An error occured"})
+		c.IndentedJSON(500, gin.H{"result": "An error occured"})
 	}
 }
 
 func Health(c *gin.Context) {
-	content := gin.H{"health": "alive"}
-	c.JSON(200, content)
+	db, err := sql.Open("sqlite3", "db.sqlite3")
+	defer db.Close()
+	err = db.Ping()
+	if err != nil {
+		content := gin.H{"health": "dead"}
+		c.IndentedJSON(200, content)
+	} else {
+		content := gin.H{"health": "alive"}
+		c.IndentedJSON(200, content)
+	}
 }
 
 func PingPong(c *gin.Context) {
@@ -111,19 +119,19 @@ func PingPong(c *gin.Context) {
 
 func initDb() *gorp.DbMap {
 	db, err := sql.Open("sqlite3", "db.sqlite3")
-	checkErr(err, "sql.Open failed")
+	HandleError(err, "sql.Open failed")
 
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.SqliteDialect{}}
 
 	dbmap.AddTableWithName(Task{}, "tasks").SetKeys(true, "Id")
 
 	err = dbmap.CreateTablesIfNotExists()
-	checkErr(err, "Create tables failed")
+	HandleError(err, "Create tables failed")
 
 	return dbmap
 }
 
-func checkErr(err error, msg string) {
+func HandleError(err error, msg string) {
 	if err != nil {
 		log.Fatalln(msg, err)
 	}
