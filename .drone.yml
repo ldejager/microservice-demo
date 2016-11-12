@@ -3,9 +3,13 @@ build:
   commands:
     - go get
     - go install github.com/mattn/go-sqlite3
-    - CGO_ENABLED=1 go build -v -a --installsuffix cgo --ldflags=\"-s\"
+    - CGO_ENABLED=1 go build -v -a --installsuffix cgo --ldflags=\"-s\" -o api
 
 publish:
+  github_release:
+    api_key: $$GITHUB_API_KEY
+    files: api
+    checksum: sha1
   docker:
     username: $$DOCKER_USERNAME
     password: $$DOCKER_PASSWORD
