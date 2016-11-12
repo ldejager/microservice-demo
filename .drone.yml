@@ -2,15 +2,8 @@ build:
   image: golang
   commands:
     - go get
-    - godep save -r
-    - CGO_ENABLED=0 go build -v -a --installsuffix cgo --ldflags="-s"
+    - CGO_ENABLED=0 go build -v -a --installsuffix cgo --ldflags=\"-s\"
 
-publish:
-  github_release:
-    api_key: $$GITHUB_API_KEY
-    files: *
-    checksum: sha1
-    
 publish:
   docker:
     username: $$DOCKER_USERNAME
