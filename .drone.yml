@@ -10,6 +10,8 @@ publish:
     api_key: $$GITHUB_API_KEY
     files: *
     checksum: sha1
+    
+publish:
   docker:
     username: $$DOCKER_USERNAME
     password: $$DOCKER_PASSWORD
