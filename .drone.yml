@@ -2,9 +2,14 @@ build:
   image: golang
   commands:
     - go get
-    - go build 
+    - godep save -r
+    - CGO_ENABLED=0 go build -v -a --installsuffix cgo --ldflags="-s"
 
 publish:
+  github_release:
+    api_key: $$GITHUB_API_KEY
+    files: *
+    checksum: sha1
   docker:
     username: $$DOCKER_USERNAME
     password: $$DOCKER_PASSWORD
@@ -13,9 +18,3 @@ publish:
     tag:
       - $$COMMIT
       - latest
-
-notify:
-  slack:
-    webhook_url: https://hooks.slack.com/services/...
-    username: deploy
-    channel: k8s_tech_day
