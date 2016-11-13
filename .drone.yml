@@ -1,6 +1,7 @@
 build:
   image: golang
   commands:
+    - go get
     - CGO_ENABLED=0 go build -a --installsuffix cgo --ldflags=\"-s\" -tags api -o api
 
 publish:
