@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"strconv"
 	"time"
 
@@ -9,10 +11,29 @@ import (
 
 	"github.com/coopernurse/gorp"
 	"github.com/gin-gonic/gin"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/kelseyhightower/envconfig"
 )
 
 var dbmap = initDb()
+
+// Config struct
+type DBConfig struct {
+	Port     string `default:"3306"`
+	Username string
+	Password string
+	Hostname string `default:"localhost"`
+	Database string `default:"tasks"`
+}
+
+// Task struct
+type Task struct {
+	Id          int64 `db:"task_id"`
+	Created     int64
+	Completed   int64
+	Name        string
+	Description string
+}
 
 func main() {
 
@@ -28,15 +49,20 @@ func main() {
 	router.GET("/health", Health)
 	router.GET("/ping", PingPong)
 	router.Run(":8000")
+
 }
 
-// Task struct
-type Task struct {
-	Id          int64 `db:"task_id"`
-	Created     int64
-	Completed   int64
-	Name        string
-	Description string
+func CreateConnectionString() string {
+
+	var s DBConfig
+	err := envconfig.Process("db", &s)
+
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+		s.Username, s.Password, s.Hostname, s.Port, s.Database)
 }
 
 func DefaultLanding(c *gin.Context) {
@@ -101,7 +127,8 @@ func TaskPost(c *gin.Context) {
 }
 
 func Health(c *gin.Context) {
-	db, err := sql.Open("sqlite3", "db.sqlite3")
+	connectionString := CreateConnectionString()
+	db, err := sql.Open("mysql", connectionString)
 	defer db.Close()
 	err = db.Ping()
 	if err != nil {
@@ -118,10 +145,28 @@ func PingPong(c *gin.Context) {
 }
 
 func initDb() *gorp.DbMap {
-	db, err := sql.Open("sqlite3", "db.sqlite3")
-	HandleError(err, "sql.Open failed")
 
-	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.SqliteDialect{}}
+	log.Println("Starting API...")
+
+	if os.Getenv("DB_USERNAME") == "" {
+		log.Fatal("DB_USERNAME must be set and non-empty")
+	}
+	if os.Getenv("DB_PASSWORD") == "" {
+		log.Fatal("DB_PASSWORD must be set and non-empty")
+	}
+	if os.Getenv("DB_DATABASE") == "" {
+		log.Fatal("DB_DATABASE must be set and non-empty")
+	}
+
+	connectionString := CreateConnectionString()
+
+	log.Println("Using the following connection string")
+	log.Println(connectionString)
+
+	db, err := sql.Open("mysql", connectionString)
+	HandleError(err, "Database connection failed!")
+
+	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
 
 	dbmap.AddTableWithName(Task{}, "tasks").SetKeys(true, "Id")
 
