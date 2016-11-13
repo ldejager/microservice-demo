@@ -160,9 +160,6 @@ func initDb() *gorp.DbMap {
 
 	connectionString := CreateConnectionString()
 
-	log.Println("Using the following connection string")
-	log.Println(connectionString)
-
 	db, err := sql.Open("mysql", connectionString)
 	HandleError(err, "Database connection failed!")
 

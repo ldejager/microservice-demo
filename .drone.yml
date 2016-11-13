@@ -4,6 +4,10 @@ build:
     - go get
     - CGO_ENABLED=0 go build -a --installsuffix cgo --ldflags=\"-s\" -tags api -o api
 
+    - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+    - CGO_ENABLED=0 go build -a -installsuffix cgo
+
+
 publish:
   github_release:
     api_key: $$GITHUB_API_KEY
