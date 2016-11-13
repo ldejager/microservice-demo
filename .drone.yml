@@ -1,7 +1,7 @@
 build:
   image: golang
   commands:
-    - CGO_ENABLED=0 go get -a -ldflags '-s' github.com/ldejager/microservices-demo
+    - CGO_ENABLED=0 go build -ldflags=\"-s -w -X main.build=$DRONE_COMMIT\" -a -tags api -o api
 
 publish:
   github_release:
