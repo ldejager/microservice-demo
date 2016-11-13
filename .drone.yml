@@ -3,15 +3,15 @@ build:
   commands:
     - go get
     - go install github.com/mattn/go-sqlite3
-    - CGO_ENABLED=1 go build -v -a --installsuffix cgo --ldflags=\"-s\" -o api-static
-    - ls -al
-    - find / -name api-static
+    - CGO_ENABLED=1 go build -a --installsuffix cgo --ldflags=\"-s\" -o api
 
 publish:
   github_release:
     api_key: $$GITHUB_API_KEY
     files: api
     checksum: sha1
+    when:
+      event: tag
 
 publish:
   docker:
@@ -19,6 +19,7 @@ publish:
     password: $$DOCKER_PASSWORD
     email: $$DOCKER_EMAIL
     repo: ldejager/microservices-demo
+    file: Dockerfile
     tag:
       - $$COMMIT
       - latest
