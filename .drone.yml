@@ -1,8 +1,6 @@
 build:
   image: golang
   commands:
-    - go get
-    - go install github.com/mattn/go-sqlite3
     - CGO_ENABLED=0 go get -a -ldflags '-s' github.com/ldejager/microservices-demo
 
 publish:
