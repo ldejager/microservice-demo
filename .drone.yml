@@ -3,7 +3,7 @@ build:
   commands:
     - go get
     - go install github.com/mattn/go-sqlite3
-    - CGO_ENABLED=1 go build -a --installsuffix cgo --ldflags=\"-s\" -o api
+    - CGO_ENABLED=0 go build -v -a -installsuffix cgo
 
 publish:
   github_release:
