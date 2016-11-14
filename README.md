@@ -1,3 +1,5 @@
+[![Build Status](https://drone.rwxlabs.io/api/badges/ldejager/microservice-demo/status.svg)](https://drone.rwxlabs.io/ldejager/microservice-demo)
+
 # API
 
 The purpose of the demo is to take a service and break it down into smaller pieces to allow for scalability by decoupling the API in this example from the database.
