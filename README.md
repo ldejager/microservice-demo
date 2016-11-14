@@ -86,8 +86,4 @@ livenessProbe:
 
 ## TODO
 
-- Abstract sqlite database from the service
-- Create a real health check
-- Create build toolset for the API
 - Create sample tests which is triggered by the build toolset
-- Create Kubernetes resource controller and service etc. definitions
