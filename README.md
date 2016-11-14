@@ -1,4 +1,4 @@
-[![Build Status](https://drone.rwxlabs.io/api/badges/ldejager/microservice-demo/status.svg)](https://drone.rwxlabs.io/ldejager/microservice-demo)
+[![Build Status](https://droneci.rwxlabs.io/api/badges/ldejager/microservice-demo/status.svg)](https://droneci.rwxlabs.io/ldejager/microservice-demo)
 
 # API
 
@@ -27,13 +27,26 @@ docker build -t api .
 
 Once the binary has been built, run it like so locally. Alternatively, run the docker container you have created in the step above.
 
+#### Locally
 ```
 ./api
 ```
 
+#### Docker
+```
+docker run -d -p80:8000 -e DB_USERNAME=test -e DB_PASSWORD=test -e DB_HOSTNAME=test -e DB_DATABASE=test ldejager/microservices-demo
+```
+
 ### Configuration
 
-Currently there is no configuration for the API, however, once the TODO items have been done I'd expect database and other configuration values to be passed in as environment variables.
+The API expects the following environment variables to be passed in before it will start;
+
+`DB_USERNAME`
+`DB_PASSWORD`
+`DB_HOSTNAME`
+`DB_DATABASE`
+
+You will need to have this setup prior to launching the API.
 
 ### Interacting
 

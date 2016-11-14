@@ -1,28 +1,29 @@
-build:
-  image: golang
-  commands:
-    - go get
-    - CGO_ENABLED=0 go build -a --installsuffix cgo --ldflags=\"-s\" -tags api -o api
+workspace:
+  base: /go
+  path: src/github.com/ldejager/microservice-demo
 
-    - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
-    - CGO_ENABLED=0 go build -a -installsuffix cgo
-
-
-publish:
-  github_release:
-    api_key: $$GITHUB_API_KEY
-    files: api
-    checksum: sha1
+pipeline:
+  build:
+    image: golang
+    environment:
+      - GOOS=linux
+      - GOARCH=amd64
+      - CGO_ENABLED=0
+      - GOPATH=/go
+    commands:
+      - export PATH=$PATH:$GOPATH/bin
+      - go get
+      - go build -a -o api
     when:
-      event: tag
-
-publish:
-  docker:
+      branch: master
+      event: push
+  publish:
+    image: plugins/docker
     username: $$DOCKER_USERNAME
     password: $$DOCKER_PASSWORD
     email: $$DOCKER_EMAIL
-    repo: ldejager/microservices-demo
+    repo: ldejager/microservice-demo
     file: Dockerfile
     tag:
-      - $$COMMIT
+      - ${DRONE_COMMIT:0:8}
       - latest
