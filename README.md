@@ -1,4 +1,4 @@
-[![Build Status](https://droneci.rwxlabs.io/api/badges/ldejager/microservice-demo/status.svg)](https://droneci.rwxlabs.io/ldejager/microservice-demo)
+[![Build Status](https://droneci.rwxlabs.io/api/badges/ldejager/microservice-demo/status.svg)](https://droneci.rwxlabs.io/ldejager/microservice-demo)  [![](https://images.microbadger.com/badges/image/ldejager/microservice-demo:d305948e.svg)](https://microbadger.com/images/ldejager/microservice-demo:d305948e "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/ldejager/microservice-demo.svg)](https://microbadger.com/images/ldejager/microservice-demo "Get your own version badge on microbadger.com")
 
 # API
 
