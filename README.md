@@ -10,31 +10,10 @@ Using Gin as a web framework the goal is to create a simple task API which has e
 
 ### Building
 
-You have two options in building the binary, the first being locally which uses your host operation systems golang path, libraries etc., the other being to use the pre-built binary in the docker container.
-
-#### Locally
-```
-go build
-```
-
-#### Docker
+The repo provides a Makefile which can use used to build cross platform binaries of the microservice-demo binary. From within the repository, run the following;
 
 ```
-docker build -t api .
-```
-
-### Running
-
-Once the binary has been built, run it like so locally. Alternatively, run the docker container you have created in the step above.
-
-#### Locally
-```
-./api
-```
-
-#### Docker
-```
-docker run -d -p80:8000 -e DB_USERNAME=test -e DB_PASSWORD=test -e DB_HOSTNAME=test -e DB_DATABASE=test ldejager/microservices-demo
+make
 ```
 
 ### Configuration
@@ -47,6 +26,26 @@ The API expects the following environment variables to be passed in before it wi
 `DB_DATABASE`
 
 You will need to have this setup prior to launching the API.
+
+### Running
+
+Once the binary has been built, you can either run it locally or via a docker container.
+
+For example;
+
+```
+export DB_USERNAME=test
+export DB_PASSWORD=test
+export DB_HOSTNAME=test
+export DB_DATABASE=test
+release/linux/amd64/microservice-demo
+```
+
+Running the docker container is just as simple;
+
+```
+docker run -d -p80:8000 -e DB_USERNAME=test -e DB_PASSWORD=test -e DB_HOSTNAME=test -e DB_DATABASE=test ldejager/microservices-demo
+```
 
 ### Interacting
 

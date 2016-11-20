@@ -2,16 +2,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: microservices-demo
+  name: microservice-demo
   labels:
-    name: microservices-demo
+    name: microservice-demo
 spec:
   ports:
     - port: 80
       protocol: TCP
       targetPort: 8000
   selector:
-    name: microservices-demo
+    name: microservice-demo
   type: LoadBalancer
 ---
 apiVersion: v1
@@ -28,21 +28,21 @@ metadata:
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: microservices-demo
+  name: microservice-demo
   labels:
-    name: microservices-demo
+    name: microservice-demo
 spec:
   replicas: 1
   selector:
-    name: microservices-demo
+    name: microservice-demo
   template:
     metadata:
       labels:
-        name: microservices-demo
+        name: microservice-demo
     spec:
       containers:
-        - image: ldejager/microservices-demo
-          name: microservices-demo
+        - image: ldejager/microservice-demo
+          name: microservice-demo
           env:
             - name: DB_USERNAME
               valueFrom:
