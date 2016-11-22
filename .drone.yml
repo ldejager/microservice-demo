@@ -27,3 +27,11 @@ pipeline:
     tag:
       - ${DRONE_COMMIT:0:8}
       - latest
+  notify:
+    image: ldejager/microbadger-notify
+    pull: true
+    environment:
+      - MB_REPOSITORY=ldejager/microservice-demo
+      - MB_TOKEN=lzKINTbcyiK9gEUu7XMDqR18VM4=
+    when:
+      status: success
